@@ -26,15 +26,12 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"github.com/metal-pod/droptailer/dropsink"
 	pb "github.com/metal-pod/droptailer/dropsink"
 	"google.golang.org/grpc"
-)
-
-const (
-	port = ":50051"
 )
 
 // server is used to implement dropsink.Push
@@ -47,10 +44,12 @@ func (s *server) Push(ctx context.Context, de *dropsink.DropEntry) (*dropsink.Vo
 }
 
 func main() {
-	lis, err := net.Listen("tcp", port)
+	port := os.Getenv("SERVER_PORT")
+	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+	log.Printf("listening on %s\n", port)
 	s := grpc.NewServer()
 	pb.RegisterDropSinkServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
