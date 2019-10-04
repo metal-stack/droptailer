@@ -9,9 +9,8 @@ service DropSink {
 }
 
 message DropEntry {
-    // TODO native Timestamp is available
     google.protobuf.Timestamp timestamp = 1;
-    map<string, string> fields = 3;
+    map<string, string> fields = 2;
 }
 
 message Void {}

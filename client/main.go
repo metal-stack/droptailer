@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -38,8 +39,11 @@ import (
 )
 
 const (
-	address            = "localhost:50051"
-	nftablesDropPrefix = "nftables-metal-dropped: "
+	address = "localhost:50051"
+)
+
+var (
+	nftablesDropPrefixs = []string{"nftables-metal-dropped: ", "nftables-firewall-dropped: "}
 )
 
 type dropreader struct {
@@ -52,6 +56,11 @@ func main() {
 	opts := []grpc_retry.CallOption{
 		grpc_retry.WithBackoff(grpc_retry.BackoffLinear(100 * time.Millisecond)),
 	}
+	address := os.Getenv("DROPTAILER_SERVER_ADDRESS")
+	if address == "" {
+		address = "localhost:50051"
+	}
+
 	conn, err := grpc.Dial(address, grpc.WithInsecure(),
 		// grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor(opts...)),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor(opts...)),
@@ -128,11 +137,13 @@ func (d *dropreader) writeTo(r io.ReadCloser) {
 			continue
 		}
 		msg := parts[1]
-		if !strings.HasPrefix(msg, nftablesDropPrefix) {
-			fmt.Printf("message:%s dropped\n", msg)
-			continue
+		for _, prefix := range nftablesDropPrefixs {
+			if !strings.HasPrefix(msg, prefix) {
+				fmt.Printf("message:%s dropped\n", msg)
+				continue
+			}
+			msg = strings.TrimPrefix(msg, prefix)
 		}
-		msg = strings.TrimPrefix(msg, nftablesDropPrefix)
 		fields := parseFields(msg)
 		de := &pb.DropEntry{
 			Timestamp: &timestamp.Timestamp{Seconds: ts},
