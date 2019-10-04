@@ -5,6 +5,6 @@ RUN make server
 
 FROM alpine:3.10
 COPY --from=builder /work/bin/server /server
-ENV SERVER_PORT=50010
+ENV SERVER_PORT=50051
 EXPOSE ${SERVER_PORT}
 CMD ["/server"]

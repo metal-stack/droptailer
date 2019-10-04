@@ -2,13 +2,15 @@ syntax = "proto3";
 
 package dropsink;
 
+import "google/protobuf/timestamp.proto";
+
 service DropSink {
     rpc Push (DropEntry) returns (Void) {};
 }
 
 message DropEntry {
     // TODO native Timestamp is available
-    int64 timestamp = 1;
+    google.protobuf.Timestamp timestamp = 1;
     map<string, string> fields = 3;
 }
 

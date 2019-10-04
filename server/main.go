@@ -39,12 +39,15 @@ type server struct{}
 
 // Push implements dropsink.Push
 func (s *server) Push(ctx context.Context, de *dropsink.DropEntry) (*dropsink.Void, error) {
-	fmt.Printf("%s %s\n", time.Unix(de.Timestamp, 0), de.Fields)
+	fmt.Printf("%s %s\n", time.Unix(de.Timestamp.Seconds, 0), de.Fields)
 	return &dropsink.Void{}, nil
 }
 
 func main() {
 	port := os.Getenv("SERVER_PORT")
+	if port == "" {
+		port = "50051"
+	}
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

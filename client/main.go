@@ -30,8 +30,10 @@ import (
 	"time"
 
 	"github.com/coreos/go-systemd/sdjournal"
+	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	pb "github.com/metal-pod/droptailer/dropsink"
+
 	"google.golang.org/grpc"
 )
 
@@ -133,7 +135,7 @@ func (d *dropreader) writeTo(r io.ReadCloser) {
 		msg = strings.TrimPrefix(msg, nftablesDropPrefix)
 		fields := parseFields(msg)
 		de := &pb.DropEntry{
-			Timestamp: ts,
+			Timestamp: &timestamp.Timestamp{Seconds: ts},
 			Fields:    fields,
 		}
 		_, err = d.dc.Push(
