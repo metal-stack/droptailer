@@ -13,6 +13,6 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login docker.pkg.github.com -u majst01 -p ${{ secrets.PACKAGE_REPO_TOKEN }}
-        docker build . --file Dockerfile --tag docker.pkg.github.com/metal-pod/droptailer:latest
-        docker push docker.pkg.github.com/metal-pod/droptailer:latest
+        docker build . --file Dockerfile --tag docker.pkg.github.com/metal-pod/droptailer/server:latest
+        docker push docker.pkg.github.com/metal-pod/droptailer/server:latest
       
