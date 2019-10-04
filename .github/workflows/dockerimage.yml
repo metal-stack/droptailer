@@ -13,5 +13,5 @@ jobs:
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag docker.pkg.github.com/metal-pod/droptailer:latest
-        docker push docker.pkg.github.com/metal-pod/droptailer/droptailer:latest
+        docker push docker.pkg.github.com/metal-pod/droptailer:latest
       
