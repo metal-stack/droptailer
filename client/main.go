@@ -56,6 +56,13 @@ func main() {
 	opts := []grpc_retry.CallOption{
 		grpc_retry.WithBackoff(grpc_retry.BackoffLinear(100 * time.Millisecond)),
 	}
+
+	// address should be in the form of: dns://localhost:53/droptailer:50051
+	// then according to: https://github.com/grpc/grpc/blob/master/doc/naming.md
+	// name based resolution should happen, which can be a /etc/hosts entry
+	// which is created by the firewall-policy-controller
+	// or we skip the dns resolver inbetween and just specify:
+	// droptailer:50051 and rely on the local resolver which will update the IP for the client.
 	address := os.Getenv("DROPTAILER_SERVER_ADDRESS")
 	if address == "" {
 		address = "localhost:50051"
