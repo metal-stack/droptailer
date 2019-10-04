@@ -7,4 +7,5 @@ FROM alpine:3.10
 COPY --from=builder /work/bin/server /server
 ENV SERVER_PORT=50051
 EXPOSE ${SERVER_PORT}
+USER nobody
 CMD ["/server"]
