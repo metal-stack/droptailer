@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package dropsink;
+
+service DropSink {
+    rpc Push (DropEntry) returns (Void) {};
+}
+
+message DropEntry {
+    // TODO native Timestamp is available
+    int64 timestamp = 1;
+    map<string, string> fields = 3;
+}
+
+message Void {}
