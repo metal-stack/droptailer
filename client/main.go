@@ -63,6 +63,7 @@ func main() {
 	// which is created by the firewall-policy-controller
 	// or we skip the dns resolver inbetween and just specify:
 	// droptailer:50051 and rely on the local resolver which will update the IP for the client.
+	// /etc/hosts can be updated with: https://github.com/txn2/txeh
 	address := os.Getenv("DROPTAILER_SERVER_ADDRESS")
 	if address == "" {
 		address = "localhost:50051"
