@@ -1,14 +1,14 @@
 syntax = "proto3";
 
-package dropsink;
+package droptailer;
 
 import "google/protobuf/timestamp.proto";
 
-service DropSink {
-    rpc Push (DropEntry) returns (Void) {};
+service Droptailer {
+    rpc Push (Drop) returns (Void) {};
 }
 
-message DropEntry {
+message Drop {
     google.protobuf.Timestamp timestamp = 1;
     map<string, string> fields = 2;
 }
