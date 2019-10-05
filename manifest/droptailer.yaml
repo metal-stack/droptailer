@@ -20,5 +20,7 @@
             limits:
               memory: "128Mi"
               cpu: "500m"
+          securityContext:
+            runAsUser: 1000
           ports:
           - containerPort: 50051
