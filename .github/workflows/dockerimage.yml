@@ -13,6 +13,6 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login -u metalpod -p ${{ secrets.DOCKER_HUB_TOKEN }}
-        docker build . --file Dockerfile --tag metalpod/droptailer:latest
-        docker push metalpod/droptailer:latest
+        make dockerimage
+        make dockerpush
       
