@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/metal-pod/droptailer/droptailer"
+	pb "github.com/metal-pod/droptailer/proto"
 )
 
 type Server struct{}
 
 // Push implements droptailer.Push
-func (s *Server) Push(ctx context.Context, de *droptailer.Drop) (*droptailer.Void, error) {
+func (s *Server) Push(ctx context.Context, de *pb.Drop) (*pb.Void, error) {
 	fmt.Printf("%s %s\n", time.Unix(de.Timestamp.Seconds, 0), de.Fields)
-	return &droptailer.Void{}, nil
+	return &pb.Void{}, nil
 }

@@ -5,7 +5,7 @@ import (
 	"net"
 	"os"
 
-	pb "github.com/metal-pod/droptailer/droptailer"
+	pb "github.com/metal-pod/droptailer/proto"
 
 	server "github.com/metal-pod/droptailer/pkg/server"
 	"google.golang.org/grpc"

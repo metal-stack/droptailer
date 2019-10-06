@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package droptailer;
+package proto;
 
 import "google/protobuf/timestamp.proto";
 

@@ -1,7 +1,8 @@
 GO111MODULE := on
 
+.PHONY: proto
 proto:
-	protoc -I droptailer/ droptailer/droptailer.proto --go_out=plugins=grpc:droptailer
+	protoc -I proto/ proto/droptailer.proto --go_out=plugins=grpc:proto
 
 .PHONY: server
 server:
