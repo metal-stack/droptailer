@@ -67,9 +67,9 @@ func newCtx(timeout time.Duration) context.Context {
 }
 
 func messageFormatter(entry *sdjournal.JournalEntry) (string, error) {
-	msg, ok := entry.Fields["MESSAGE"]
+	msg, ok := entry.Fields[sdjournal.SD_JOURNAL_FIELD_MESSAGE]
 	if !ok {
-		return "", fmt.Errorf("no MESSAGE field present in journal entry")
+		return "", fmt.Errorf("no %s field present in journal entry", sdjournal.SD_JOURNAL_FIELD_MESSAGE)
 	}
 	usec := entry.RealtimeTimestamp
 	timestamp := time.Unix(0, int64(usec)*int64(time.Microsecond))
