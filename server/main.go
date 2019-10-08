@@ -14,6 +14,11 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
+const (
+	defaultServerCertificate = "server.pem"
+	defaultServerKey         = "server-key.pem"
+)
+
 func main() {
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
@@ -26,16 +31,24 @@ func main() {
 	log.Printf("listening on %s\n", port)
 
 	// Read cert and key file
-	serverCert, _ := ioutil.ReadFile("./cfssl/server.pem")
-	serverKey, _ := ioutil.ReadFile("./cfssl/server-key.pem")
+	serverCertificate := os.Getenv("SERVER_CERTIFICATE")
+	if serverCertificate == "" {
+		serverCertificate = defaultServerCertificate
+	}
+	serverKey := os.Getenv("SERVER_KEY")
+	if serverKey == "" {
+		serverKey = defaultServerKey
+	}
+	cert, _ := ioutil.ReadFile(serverCertificate)
+	key, _ := ioutil.ReadFile(serverKey)
 
 	// Generate Certificate struct
-	cert, err := tls.X509KeyPair(serverCert, serverKey)
+	c, err := tls.X509KeyPair(cert, key)
 	if err != nil {
 		log.Fatalf("failed to parse certificate: %v", err)
 	}
 	// // Create the TLS credentials
-	creds := credentials.NewServerTLSFromCert(&cert)
+	creds := credentials.NewServerTLSFromCert(&c)
 	if err != nil {
 		log.Fatalf("could not load TLS keys: %s", err)
 	}
