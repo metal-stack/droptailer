@@ -9,7 +9,10 @@ import (
 )
 
 const (
-	defaultServerAddress = "localhost:50051"
+	defaultServerAddress     = "localhost:50051"
+	defaultCaCertificate     = "/etc/metal-ca/ca.pem"
+	defaultClientCertificate = "/etc/droptailer/droptailer-client.pem"
+	defaultClientKey         = "/etc/droptailer/droptailer-client-key.pem"
 )
 
 var defaultPrefixesOfDrops = []string{"nftables-metal-dropped: ", "nftables-firewall-dropped: "}
@@ -31,9 +34,27 @@ func main() {
 	if prefixesOfDropsEnv != "" {
 		prefixesOfDrops = strings.Split(prefixesOfDropsEnv, ",")
 	}
+
+	caCertificate := os.Getenv("DROPTAILER_CA_CERTIFICATE")
+	if caCertificate == "" {
+		caCertificate = defaultCaCertificate
+	}
+	clientCertificate := os.Getenv("DROPTAILER_CLIENT_CERTIFICATE")
+	if clientCertificate == "" {
+		clientCertificate = defaultClientCertificate
+	}
+	clientKey := os.Getenv("DROPTAILER_CLIENT_KEY")
+	if clientKey == "" {
+		clientKey = defaultClientKey
+	}
 	c := client.Client{
 		ServerAddress:   address,
 		PrefixesOfDrops: prefixesOfDrops,
+		Certificates: client.Certificates{
+			CaCertificate:     caCertificate,
+			ClientCertificate: clientCertificate,
+			ClientKey:         clientKey,
+		},
 	}
 	err := c.Start()
 	if err != nil {

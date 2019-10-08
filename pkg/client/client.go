@@ -21,20 +21,28 @@ import (
 type Client struct {
 	ServerAddress   string
 	PrefixesOfDrops []string
+	Certificates    Certificates
+}
+
+// Certificates holds the paths to the droptailer cert information
+type Certificates struct {
+	CaCertificate     string
+	ClientCertificate string
+	ClientKey         string
 }
 
 // Start to push drops to the droptailer server.
 func (c Client) Start() error {
 
 	// Load the certificates from disk
-	certificate, err := tls.LoadX509KeyPair("./cfssl/client.pem", "./cfssl/client-key.pem")
+	certificate, err := tls.LoadX509KeyPair(c.Certificates.ClientCertificate, c.Certificates.ClientKey)
 	if err != nil {
 		return fmt.Errorf("could not load client key pair: %s", err)
 	}
 
 	// Create a certificate pool from the certificate authority
 	certPool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile("./cfssl/ca.pem")
+	ca, err := ioutil.ReadFile(c.Certificates.CaCertificate)
 	if err != nil {
 		return fmt.Errorf("could not read ca certificate: %s", err)
 	}
