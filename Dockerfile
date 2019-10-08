@@ -1,7 +1,9 @@
 FROM golang:1.13-buster as builder
 COPY / /work
 WORKDIR /work
-RUN make client server
+RUN apt-get update \
+ && apt-get install libsystemd-dev \
+ && make client server
 
 FROM alpine:3.10
 COPY --from=builder /work/bin/server /server
