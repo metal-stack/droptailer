@@ -11,7 +11,7 @@ server:
 
 .PHONY: client
 client:
-	go build -tags netgo -ldflags "-linkmode external -extldflags '-static -s -w'" -o bin/client client/main.go
+	go build -tags netgo -o bin/client client/main.go
 	strip bin/client
 
 .PHONY: dockerimage
