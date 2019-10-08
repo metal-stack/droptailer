@@ -39,8 +39,14 @@ func main() {
 	if serverKey == "" {
 		serverKey = defaultServerKey
 	}
-	cert, _ := ioutil.ReadFile(serverCertificate)
-	key, _ := ioutil.ReadFile(serverKey)
+	cert, err := ioutil.ReadFile(serverCertificate)
+	if err != nil {
+		log.Fatalf("could not read server certificate: %v", err)
+	}
+	key, err := ioutil.ReadFile(serverKey)
+	if err != nil {
+		log.Fatalf("could not read server key: %v", err)
+	}
 
 	// Generate Certificate struct
 	c, err := tls.X509KeyPair(cert, key)
