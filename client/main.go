@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
+	"net"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/metal-pod/droptailer/pkg/client"
 )
@@ -29,6 +31,12 @@ func main() {
 	if address == "" {
 		address = defaultServerAddress
 	}
+
+	_, err := net.DialTimeout("tcp", address, time.Second*5)
+	if err != nil {
+		log.Fatalf("could not reach droptailer server within 5 seconds: %v", err)
+	}
+
 	prefixesOfDrops := defaultPrefixesOfDrops
 	prefixesOfDropsEnv := os.Getenv("DROPTAILER_PREFIXES_OF_DROPS")
 	if prefixesOfDropsEnv != "" {
@@ -56,7 +64,7 @@ func main() {
 			ClientKey:         clientKey,
 		},
 	}
-	err := c.Start()
+	err = c.Start()
 	if err != nil {
 		log.Fatalf("client could not start or died, %v", err)
 	}
