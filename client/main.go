@@ -2,14 +2,19 @@ package main
 
 import (
 	"log"
+	"net"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/metal-pod/droptailer/pkg/client"
 )
 
 const (
-	defaultServerAddress = "localhost:50051"
+	defaultServerAddress     = "localhost:50051"
+	defaultCaCertificate     = "/etc/metal-ca/ca.pem"
+	defaultClientCertificate = "/etc/droptailer/droptailer-client.pem"
+	defaultClientKey         = "/etc/droptailer/droptailer-client-key.pem"
 )
 
 var defaultPrefixesOfDrops = []string{"nftables-metal-dropped: ", "nftables-firewall-dropped: "}
@@ -26,16 +31,40 @@ func main() {
 	if address == "" {
 		address = defaultServerAddress
 	}
+
+	_, err := net.DialTimeout("tcp", address, time.Second*5)
+	if err != nil {
+		log.Fatalf("could not reach droptailer server within 5 seconds: %v", err)
+	}
+
 	prefixesOfDrops := defaultPrefixesOfDrops
 	prefixesOfDropsEnv := os.Getenv("DROPTAILER_PREFIXES_OF_DROPS")
 	if prefixesOfDropsEnv != "" {
 		prefixesOfDrops = strings.Split(prefixesOfDropsEnv, ",")
 	}
+
+	caCertificate := os.Getenv("DROPTAILER_CA_CERTIFICATE")
+	if caCertificate == "" {
+		caCertificate = defaultCaCertificate
+	}
+	clientCertificate := os.Getenv("DROPTAILER_CLIENT_CERTIFICATE")
+	if clientCertificate == "" {
+		clientCertificate = defaultClientCertificate
+	}
+	clientKey := os.Getenv("DROPTAILER_CLIENT_KEY")
+	if clientKey == "" {
+		clientKey = defaultClientKey
+	}
 	c := client.Client{
 		ServerAddress:   address,
 		PrefixesOfDrops: prefixesOfDrops,
+		Certificates: client.Certificates{
+			CaCertificate:     caCertificate,
+			ClientCertificate: clientCertificate,
+			ClientKey:         clientKey,
+		},
 	}
-	err := c.Start()
+	err = c.Start()
 	if err != nil {
 		log.Fatalf("client could not start or died, %v", err)
 	}

@@ -10,7 +10,7 @@ jobs:
  
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Docker image
+    - name: Build the Docker images
       run: |
         docker login -u metalpod -p ${{ secrets.DOCKER_HUB_TOKEN }}
         make dockerimage
