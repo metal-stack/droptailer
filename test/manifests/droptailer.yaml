@@ -7,82 +7,6 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: droptailer-client
-  namespace: droptailer
-stringData:
-  tls.crt: |
-    -----BEGIN CERTIFICATE-----
-    MIIDRTCCAi2gAwIBAgIUL6ZMrnH8SEQv1xaoDDK3sppmUEgwDQYJKoZIhvcNAQEL
-    BQAwDTELMAkGA1UEAxMCQ0EwHhcNMTkxMDIxMTM1OTAwWhcNMjQxMDE5MTM1OTAw
-    WjAcMRowGAYDVQQDExFkcm9wdGFpbGVyLWNsaWVudDCCASIwDQYJKoZIhvcNAQEB
-    BQADggEPADCCAQoCggEBAL4Ue3la+U2YSq6o9IC9tG6k+dnSqYPuO/d+fJoFReNO
-    7+xTieffbore7YtgjBIyckAkTXz0vKptY9JZGMORFVRIbQthdtPTq5+TP5TUTA5c
-    VkGkQtRVBhBI95AaV5TQnAzJlvVpFdnnM0s1/bFN9lgMBN5lUf0cfZ5Ta2bGoia5
-    WOexL3A9cu48ZvFbkz6h8WRrd3ONO1fU+cxLiinni0EIihDz13P6ewtlGrCDC0HB
-    Q4LZqOnQflTzVSJfm04gNUKflHxf0U8JUyfV4tSMN1RC0qfRSKBplaryFzHGUAGn
-    ZSS8dKHAnbbj+8glIpgJoZHAddvhrFjdZdmE3TUxgnkCAwEAAaOBjTCBijAOBgNV
-    HQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1Ud
-    EwEB/wQCMAAwHQYDVR0OBBYEFHHQqtos1T2JAy6WNjfqT9JQ35j0MB8GA1UdIwQY
-    MBaAFNu8ZsTgMkowwp7AK8DrMXU12JBfMAsGA1UdEQQEMAKCADANBgkqhkiG9w0B
-    AQsFAAOCAQEAb9VzVFzIwxn+hpFkfwkyK18U0ObUmTYRnk4wER0jhCgNAt75WOXS
-    HJod5p7auCK0UVyI75g2mR0Zq9Bnuum4PIWSR7YnmF+u+t9FejUlpN3ZItFNgZKr
-    jQSI5bDqQp9JxKkwE2Hb1T3ZbOlKHAsgLbSxifCJ/GjFcDBwTSAii4L5K2H1joo2
-    oh7C7qLBjsfwt8jAFPY7yi/sSDpzjL7AjKGB8OuokpJbopaRprnI62DA23dhUVw0
-    hMBZws8ey8vG6jaAcQgCo12NjTqxqeqGg1l4BmFxC28ItHf0eO2InIFWs96EZp14
-    kgdUdEgfC8PjXmXmlteYLSrSFqNb/Wr6CQ==
-    -----END CERTIFICATE-----
-  tls.key: |
-    -----BEGIN RSA PRIVATE KEY-----
-    MIIEowIBAAKCAQEAvhR7eVr5TZhKrqj0gL20bqT52dKpg+479358mgVF407v7FOJ
-    599uit7ti2CMEjJyQCRNfPS8qm1j0lkYw5EVVEhtC2F209Orn5M/lNRMDlxWQaRC
-    1FUGEEj3kBpXlNCcDMmW9WkV2eczSzX9sU32WAwE3mVR/Rx9nlNrZsaiJrlY57Ev
-    cD1y7jxm8VuTPqHxZGt3c407V9T5zEuKKeeLQQiKEPPXc/p7C2UasIMLQcFDgtmo
-    6dB+VPNVIl+bTiA1Qp+UfF/RTwlTJ9Xi1Iw3VELSp9FIoGmVqvIXMcZQAadlJLx0
-    ocCdtuP7yCUimAmhkcB12+GsWN1l2YTdNTGCeQIDAQABAoIBACe3o+1BoyIhlklU
-    qHJWMWOFOWfYau9UUlduqJ6OR4IttlhNRF2dBD4kQsKC1AHhZJoee8qGYP3Dib4k
-    O9ZxdGF+GLruDKRKcGwRmpGAorvFc4iXyBcSBQhWFtSXjIFd7Z2GafKxmI1FkCRB
-    DdeEkNro+AN4bF9VGrKAf8qj6rHoX8qd+jBNvDC4rUCPMsDPF8gRwfrwkLsut7DY
-    GoYmh9h7NJRMvgBYrlYCVGW2jVzrveBtlnPYiQdHKAunjG/uf7AttUDHr1a4d8UW
-    xMJz/OXBwNo1Zica4rgBq8QKjqNbiQA4kOyPxWBctueJrbzKAdZpPxxeqz1gg6MZ
-    JYpyjwECgYEA+n3iNccp15p+GMtxV3o408FheTCu6FpAwAaa6BsVSBrrHsYCv4Wr
-    FRnflG8wQXeEgWhvwzkHXiXExc31cehtzCMlAuGkAjhbMh59E/0DjEpb7bUH7IXC
-    e21ksYf4UWcETLeHGvZ/m7u0ZK3bdrLuT2CPk/gS/yv/wNThjU23WikCgYEAwkKE
-    cdKBLwDy38qHWnaSAgW3XQdCwZdBsU/YRty8/P0nmzv2LDZrigK1OYhrOGU637Y4
-    3UBW7KqPmJZDgAlUWRIRSwFsNNDEXbn/htiRF7tyyo1+/K3LhbdR4PBjbJpfRAa7
-    9yD6TpaIs3nXnL5qDMDuE+xMdYpEaDGtNUqEj9ECgYEApEaSZ/ppsoAbWl9xwZDi
-    W91i83u9+ZvXAxhR1w6L8nHU6KWrf7dF79y8CDizSPv85nF7emiYMGJMnfzojv+D
-    onEaAL3CNcKH7GKaXNV90i+iAk7LF47RcOjZNKSbcadB5p4l+MTYA2YidDSgzUOj
-    jmMhRkVXEAnm/KugEG97Y6ECgYAs2CAtCnRJ/oUSxnUym/aewuUOc7Okbx96KD18
-    Nk7mdCZlfpUYpcNzi6Z8TpK55RyPMki0QrsOTV1y0xVoBD9VhIc7cmuhUaRTIrHr
-    VilAekRIoBt1h0VZa/VZ4QSCuKxPTuKrbRB7feK20+TDSW2/3fXX4Y/Q/odGKlma
-    2MX7UQKBgAxPSfkzovHIblUoOew4cZnafMFwbaWynoN66pW297qvCmsQGdzu9/I/
-    ekLhQI/Wx6e0voWVwIiRyOm3bUK9kj/2/yBzgsG4x6DkQPhigS2+ajjozE2kzUbk
-    Tv3y6/tsBcXRInUCowVOI50nC7JA4cl6p379/3K28HVMxDRNjYNu
-    -----END RSA PRIVATE KEY-----
-  ca.crt: |
-    -----BEGIN CERTIFICATE-----
-    MIIDDjCCAfagAwIBAgIUIeL6LwKDq94qpg93WamabJU6I3wwDQYJKoZIhvcNAQEL
-    BQAwDTELMAkGA1UEAxMCQ0EwHhcNMTkxMDIxMTM1OTAwWhcNMjQxMDE5MTM1OTAw
-    WjANMQswCQYDVQQDEwJDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
-    ALXSKofhFubcW53M3UNqOawBtJuGFnlX+M6isbmwGguOKyHEkDdzHWh9vUdKPrTo
-    oqF3IOaTRHEcOuMXCdyb5wBTjtUNGzAzZKEOTVEHONuG3PfrLyvrhsB/FgLZhiyQ
-    TGoYQ8ZdJ94Meb96L+aXk4JatC4c1mveVmfzE/EGk1S8JBTkVQNcpE0LVQPmwrPf
-    zB9DxHKLdsuJg5RFdHbDlCbyKMpHZSXsm0IIBlhNDfjKvjAAs/dB/S2IgJKqYJFU
-    lSVvPLZQgUh1PipQN7hyfCwoZD6+r3x6nPI1wQTeGzquwNXhitYP8Akze6MxBbHn
-    4W6fR/soMOSuA3Yl9oYr4RkCAwEAAaNmMGQwDgYDVR0PAQH/BAQDAgEGMBIGA1Ud
-    EwEB/wQIMAYBAf8CAQIwHQYDVR0OBBYEFNu8ZsTgMkowwp7AK8DrMXU12JBfMB8G
-    A1UdIwQYMBaAFNu8ZsTgMkowwp7AK8DrMXU12JBfMA0GCSqGSIb3DQEBCwUAA4IB
-    AQBhbf8/RepjMQ/Nw8bt7I7zhPZX6CeaCv7KJuq/kqAkMk8+HQgMo6oTAMDabqPn
-    LZVYW7e3oWonad4YDOKrYMqAQsDEjDyUSugPZJyubvlPjHxw+Z0exkDoW3Fj3lG3
-    zf7IihfROopojucWqAcIls423mf6rb9sVwXV7IGxO+AvaR8eFgHBkTBha/fgM3Gv
-    KCCgwxtn3qljeYfjsGoPtxcIJLx5/xqu0c6m3kWZNC3BQtfUnJwVVxLFidbKq17W
-    yNONiVuazDFtYyaD1BayDagV7Cd9CRzNn1buz+1NIsRgjl8FM5Rpbq3spVm2urdx
-    lhsqxQLukksrPfH7hEg3vZD2
-    -----END CERTIFICATE-----
----
-apiVersion: v1
-kind: Secret
-metadata:
   name: droptailer-server
   namespace: droptailer
 stringData:
@@ -194,7 +118,6 @@ spec:
         - name: droptailer-server
           mountPath: /certificates/
           readOnly: true
-          
         resources:
           requests:
             cpu: 100m
