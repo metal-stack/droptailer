@@ -24,25 +24,24 @@ type Client struct {
 	Certificates    Certificates
 }
 
-// Certificates holds the paths to the droptailer cert information
 type Certificates struct {
-	CaCertificate     string
-	ClientCertificate string
-	ClientKey         string
+	Crt string
+	Key string
+	CA  string
 }
 
 // Start to push drops to the droptailer server.
 func (c Client) Start() error {
 
 	// Load the certificates from disk
-	certificate, err := tls.LoadX509KeyPair(c.Certificates.ClientCertificate, c.Certificates.ClientKey)
+	certificate, err := tls.LoadX509KeyPair(c.Certificates.Crt, c.Certificates.Key)
 	if err != nil {
 		return fmt.Errorf("could not load client key pair: %s", err)
 	}
 
 	// Create a certificate pool from the certificate authority
 	certPool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile(c.Certificates.CaCertificate)
+	ca, err := ioutil.ReadFile(c.Certificates.CA)
 	if err != nil {
 		return fmt.Errorf("could not read ca certificate: %s", err)
 	}
