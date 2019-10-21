@@ -16,7 +16,7 @@ client:
 
 .PHONY: dockerimage
 dockerimage:
-	docker build -t metalpod/droptailer:latest .
+	#docker build -t metalpod/droptailer:latest .
 	docker build -f Dockerfile.client -t metalpod/droptailer-client:latest .
 
 .PHONY: dockerpush

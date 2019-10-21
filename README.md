@@ -21,8 +21,6 @@ curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 chmod +x ~/bin/{cfssl,cfssljson}
 
 # Create certificates for client and server
-mkdir -p certs
-cd certs
 echo '{"CN":"CA","key":{"algo":"rsa","size":2048}}' | cfssl gencert -initca - | cfssljson -bare ca -
 echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
 export ADDRESS=droptailer
@@ -46,7 +44,7 @@ kind create cluster
 
 # Deploy droptailer-server
 export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
-kubectl apply -f ./manifest/droptailer.yaml
+kubectl apply -f ./test/manifests/droptailer.yaml
 
 # Expose droptailer-server port to host
 podName=$(kubectl get pods -n droptailer -o=jsonpath='{.items[0].metadata.name}')
@@ -55,10 +53,9 @@ kubectl port-forward -n droptailer --address 0.0.0.0 pod/$podName 50051:50051 &
 # Run droptailer-client
 docker run -it \
   --privileged \
-  --network host \
-  --env DROPTAILER_KUBECONFIG=/.kubeconfig \
-  --env DROPTAILER_SERVERADDRESS=127.0.0.1:50051 \
-  --volume "$(kind get kubeconfig-path --name="kind")":/.kubeconfig \
+  --add-host droptailer:172.17.0.1 \
+  --env DROPTAILER_SERVER_ADDRESS=droptailer:50051 \
+  --volume $(pwd)/test/certs:/etc/droptailer-client:ro \
   --volume /run/systemd/private:/run/systemd/private \
   --volume /var/log/journal:/var/log/journal \
   --volume /run/log/journal:/run/log/journal \
