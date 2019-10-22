@@ -1,4 +1,5 @@
 GO111MODULE := on
+DOCKER_TAG := $(or ${GITHUB_TAG_NAME}, latest)
 
 .PHONY: proto
 proto:
@@ -16,10 +17,10 @@ client:
 
 .PHONY: dockerimage
 dockerimage:
-	docker build -t metalpod/droptailer:latest .
-	docker build -f Dockerfile.client -t metalpod/droptailer-client:latest .
+	docker build -t metalpod/droptailer:${DOCKER_TAG} .
+	docker build -f Dockerfile.client -t metalpod/droptailer-client:${DOCKER_TAG} .
 
 .PHONY: dockerpush
 dockerpush:
-	docker push metalpod/droptailer:latest
-	docker push metalpod/droptailer-client:latest
+	docker push metalpod/droptailer:${DOCKER_TAG}
+	docker push metalpod/droptailer-client:${DOCKER_TAG}
