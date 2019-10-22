@@ -1,0 +1,139 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: droptailer
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: droptailer-server
+  namespace: droptailer
+stringData:
+  tls.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDTzCCAjegAwIBAgIUBytVaeFU9K7npMpgBVvfocrmAuUwDQYJKoZIhvcNAQEL
+    BQAwDTELMAkGA1UEAxMCQ0EwHhcNMTkxMDIxMTM1OTAwWhcNMjQxMDE5MTM1OTAw
+    WjAcMRowGAYDVQQDExFkcm9wdGFpbGVyLXNlcnZlcjCCASIwDQYJKoZIhvcNAQEB
+    BQADggEPADCCAQoCggEBAMulM7CkInBAE0UQ4xURsZ8whPCI8KOfeeC0R8fZyPwG
+    Gi5nekHT9kO54ZGyHZ96GiEtUnn6FjKsl7BvxqIkIW5Ku92Z3P93FHfPqkwm1agH
+    IhgThII6bSpQIqRsFwlaoPq0bWJjcKYPFjsEj9baQzziUbrg8+W9CzxTW6ki5/DL
+    +wlqsWHMKHkiKii0f81BqvN61Fgpt7oaMKkm8k4zJ464gXVzmUrq+G2secSXgwxL
+    q76fnpXvFS6xnziYQslPF8QMiARtFnkMoBZzJULpjE6TPamSG0E4/5I50xoAuLbd
+    xEnYrXWf4HSsmPZHHGHs4Cxk75cLwhfP6TdnJL1ZMMcCAwEAAaOBlzCBlDAOBgNV
+    HQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1Ud
+    EwEB/wQCMAAwHQYDVR0OBBYEFOnTYg0UxGneTcJVaHhi2IsSshg+MB8GA1UdIwQY
+    MBaAFNu8ZsTgMkowwp7AK8DrMXU12JBfMBUGA1UdEQQOMAyCCmRyb3B0YWlsZXIw
+    DQYJKoZIhvcNAQELBQADggEBAG0AhkqOK9HGRFxgPwsfrMqEI/C/RV0KTA+E1kuc
+    D2CXeHwo0kkLGHnW4rKwsS8sxGt14ho/oPTVkCSACTmLlhuy9Ss67sicnnGECFZe
+    YknzXEjX8rR+z2RwdwlO3JeCazC7l0ALeHEW7vzeF1KZvNdeC6lQFsqjkn8kLiEi
+    b+v6MuE8EujbV3PcVdKuzvtxwQHXNN+4fQX8QGsH+0nrPPeccsU3FE6SWNb4LG4l
+    gAh/NHhAQOGolPLVBtFiB9UpO0BsuD2C0eG5eqZujxNJgvXJOiJh7lFGYn6uDgXD
+    EmgnUgrE/kZILP1LZPBK58bBW+DEwyQ6w168T4W2JhZqSQc=
+    -----END CERTIFICATE-----
+  tls.key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEAy6UzsKQicEATRRDjFRGxnzCE8Ijwo5954LRHx9nI/AYaLmd6
+    QdP2Q7nhkbIdn3oaIS1SefoWMqyXsG/GoiQhbkq73Znc/3cUd8+qTCbVqAciGBOE
+    gjptKlAipGwXCVqg+rRtYmNwpg8WOwSP1tpDPOJRuuDz5b0LPFNbqSLn8Mv7CWqx
+    YcwoeSIqKLR/zUGq83rUWCm3uhowqSbyTjMnjriBdXOZSur4bax5xJeDDEurvp+e
+    le8VLrGfOJhCyU8XxAyIBG0WeQygFnMlQumMTpM9qZIbQTj/kjnTGgC4tt3ESdit
+    dZ/gdKyY9kccYezgLGTvlwvCF8/pN2ckvVkwxwIDAQABAoIBAQCEAkQepldYsoCL
+    TeYWO1EL41TZ47syJefInLTHPUsG7CG+oP9kerVxs6YgXvjK70jO5uVHArGvCaiP
+    C/YUFx3AtBtSDDJxO8z92ZUIJkhr0qvsNYK5NIydWDMMqLDKNICT46/gjptwWelM
+    OqnPWc8qQX8/iCEydLg608JgQqtdsIQXKYnW+erhl5wStUeoM+qdSR76E4JOqbdb
+    WCLchR0QWN4lcy1WMV+u9qTMzJtreAEhVmqTLIYmEtzW9AzTB9baRY2Sb7LE3xIp
+    hqBQ18LCttve4uQsjZ0yEtBFaix6b8oIJ4f44XOghLlfAt6gsYh+JIWAQf55G/3Q
+    GSLMUPPxAoGBANX+YyH+eouv1Hz0KccvzADGgAVL4ImuHjQIbtvdTjEg9esrtafU
+    bLw1IzttTXS0dan4d+mxtTorhPBJ59HGvc+3DTvvV8bgNgE8RK9Ag/mGr2n6riwz
+    976dmtl+dILTuLkZ90/Gkqfstm3PlEaHSAT14JrJ0Tj95sNdtjJF/1VZAoGBAPOe
+    ya4COWtN5S7KiZYJCxXGDupvSHj3XpO9bHeG6ERwExEI1zSKmO5PNzzpAAUfepPo
+    NFNQ4Q4punrxEfRc7CdAO76NGaqcAMDxhW8vZ3ARjBwavPCIDw2auE5WQ8kOHTN9
+    JccWSRXh0wakP2Fq37XlcZ9zzPxPfyJLZRx+klMfAoGBALBkKUjLIC5meCurg4h5
+    wJnfBYXYHrS+foz7ao33JM3gUnVQKUO3GQ4mau1AUrlhSyAY/Jb4cd8KImGDOgAz
+    5yABznnZ9yuqgzmPeTpQXrjfKVadWNZ827kW5p5i2x0/8iM54R60Gw0qVNG9aoac
+    WmQkXMialMh6ma3uYBGemzK5AoGAWyubckFm159pG1+0qa9stJNQVa+bwZlhjYyg
+    IQMdvS7sE73pO8J6hQSkOWlBFqm3J88Idf2Ym8JGBWhePcLgpbfGJAOODWkgZxR7
+    ySZGYYxPkNz4xFNGvuKeAsMJzx43E2PMVXsjksrWPHAPQBfM7LeXFAM0PWBKxbzN
+    dCJyBCUCgYBPJsVpc/q/ZdfhfcLUJsH2NzjyL1d0LaQ6czsegKIUpF3Vqy1Rn3b1
+    2VBFCNwQ+zMlcomZkKL0YiBbnn5fL+gZd7gfaUf/ax+NmIqTvQSI5CyCqChzgegj
+    Lpb5c6CS2txUzRVhXDQI/4PqfKki3Usy5iR8jMu+brTpYr89b2QhBA==
+    -----END RSA PRIVATE KEY-----
+  ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDDjCCAfagAwIBAgIUIeL6LwKDq94qpg93WamabJU6I3wwDQYJKoZIhvcNAQEL
+    BQAwDTELMAkGA1UEAxMCQ0EwHhcNMTkxMDIxMTM1OTAwWhcNMjQxMDE5MTM1OTAw
+    WjANMQswCQYDVQQDEwJDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
+    ALXSKofhFubcW53M3UNqOawBtJuGFnlX+M6isbmwGguOKyHEkDdzHWh9vUdKPrTo
+    oqF3IOaTRHEcOuMXCdyb5wBTjtUNGzAzZKEOTVEHONuG3PfrLyvrhsB/FgLZhiyQ
+    TGoYQ8ZdJ94Meb96L+aXk4JatC4c1mveVmfzE/EGk1S8JBTkVQNcpE0LVQPmwrPf
+    zB9DxHKLdsuJg5RFdHbDlCbyKMpHZSXsm0IIBlhNDfjKvjAAs/dB/S2IgJKqYJFU
+    lSVvPLZQgUh1PipQN7hyfCwoZD6+r3x6nPI1wQTeGzquwNXhitYP8Akze6MxBbHn
+    4W6fR/soMOSuA3Yl9oYr4RkCAwEAAaNmMGQwDgYDVR0PAQH/BAQDAgEGMBIGA1Ud
+    EwEB/wQIMAYBAf8CAQIwHQYDVR0OBBYEFNu8ZsTgMkowwp7AK8DrMXU12JBfMB8G
+    A1UdIwQYMBaAFNu8ZsTgMkowwp7AK8DrMXU12JBfMA0GCSqGSIb3DQEBCwUAA4IB
+    AQBhbf8/RepjMQ/Nw8bt7I7zhPZX6CeaCv7KJuq/kqAkMk8+HQgMo6oTAMDabqPn
+    LZVYW7e3oWonad4YDOKrYMqAQsDEjDyUSugPZJyubvlPjHxw+Z0exkDoW3Fj3lG3
+    zf7IihfROopojucWqAcIls423mf6rb9sVwXV7IGxO+AvaR8eFgHBkTBha/fgM3Gv
+    KCCgwxtn3qljeYfjsGoPtxcIJLx5/xqu0c6m3kWZNC3BQtfUnJwVVxLFidbKq17W
+    yNONiVuazDFtYyaD1BayDagV7Cd9CRzNn1buz+1NIsRgjl8FM5Rpbq3spVm2urdx
+    lhsqxQLukksrPfH7hEg3vZD2
+    -----END CERTIFICATE-----
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: droptailer
+  namespace: droptailer
+  labels:
+    k8s-app: droptailer
+spec:
+  selector:
+    matchLabels:
+      k8s-app: droptailer
+  template:
+    metadata:
+      labels:
+        k8s-app: droptailer
+        app: droptailer
+        networking.gardener.cloud/from-prometheus: allowed
+    spec:
+      containers:
+      - name: droptailer
+        imagePullPolicy: Always
+        image: docker.io/metalpod/droptailer:latest
+        ports:
+        - protocol: TCP
+          containerPort: 50051
+        securityContext:
+          runAsUser: 65534
+        env:
+        - name: SERVER_CERTIFICATE
+          value: /certificates/tls.crt
+        - name: SERVER_KEY
+          value: /certificates/tls.key
+        - name: SERVER_CA_CERTIFICATE
+          value: /certificates/ca.crt
+        volumeMounts:
+        - name: droptailer-server
+          mountPath: /certificates/
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 300Mi
+      restartPolicy: Always
+      volumes:
+      - name: droptailer-server
+        secret:
+          secretName: droptailer-server
+          items:
+          - key: tls.key
+            path: tls.key
+          - key: tls.crt
+            path: tls.crt
+          - key: ca.crt
+            path: ca.crt

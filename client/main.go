@@ -12,9 +12,9 @@ import (
 
 const (
 	defaultServerAddress     = "localhost:50051"
-	defaultCaCertificate     = "/etc/metal-ca/ca.pem"
-	defaultClientCertificate = "/etc/droptailer/droptailer-client.pem"
-	defaultClientKey         = "/etc/droptailer/droptailer-client-key.pem"
+	defaultCaCertificate     = "/etc/droptailer-client/ca.crt"
+	defaultClientCertificate = "/etc/droptailer-client/tls.crt"
+	defaultClientKey         = "/etc/droptailer-client/tls.key"
 )
 
 var defaultPrefixesOfDrops = []string{"nftables-metal-dropped: ", "nftables-firewall-dropped: "}

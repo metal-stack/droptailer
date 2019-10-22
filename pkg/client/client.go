@@ -24,11 +24,10 @@ type Client struct {
 	Certificates    Certificates
 }
 
-// Certificates holds the paths to the droptailer cert information
 type Certificates struct {
-	CaCertificate     string
 	ClientCertificate string
 	ClientKey         string
+	CaCertificate     string
 }
 
 // Start to push drops to the droptailer server.

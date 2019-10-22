@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	defaultServerCertificate = "server.pem"
-	defaultServerKey         = "server-key.pem"
+	defaultServerCertificate = "tls.crt"
+	defaultServerKey         = "tls.key"
 )
 
 func main() {
@@ -53,7 +53,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to parse certificate: %v", err)
 	}
-	// // Create the TLS credentials
+	// Create the TLS credentials
 	creds := credentials.NewServerTLSFromCert(&c)
 	if err != nil {
 		log.Fatalf("could not load TLS keys: %s", err)
