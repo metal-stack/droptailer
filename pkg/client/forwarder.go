@@ -2,6 +2,7 @@ package client
 
 import (
 	"bufio"
+	"context"
 	"io"
 	"log"
 	"strconv"
@@ -52,8 +53,10 @@ func (d *dropforwarder) writeTo(r io.ReadCloser) {
 			Timestamp: &timestamp.Timestamp{Seconds: cr.ts},
 			Fields:    fields,
 		}
+		// FIXME we leak cancel func here, dunno howto handle that.
+		ctx, _ := context.WithTimeout(context.TODO(), 35*time.Second)
 		_, err = d.dsc.Push(
-			newCtx(35*time.Second),
+			ctx,
 			de,
 			grpc_retry.WithMax(30),
 			grpc_retry.WithPerRetryTimeout(1*time.Second))
