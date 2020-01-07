@@ -39,11 +39,16 @@ echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' \
 ## Testing droptailer
 
 ```bash
+# install kind 0.6.0 or higher !
+KIND_VERSION=v0.6.1
+wget https://github.com/kubernetes-sigs/kind/releases/download/${KIND_VERSION}/kind-linux-amd64
+mv kind-linux-amd64 ~/bin/kind
+chmod +x ~/bin/kind
+
 # Create a k8s cluster
 kind create cluster
 
 # Deploy droptailer-server
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
 kubectl apply -f ./test/manifests/droptailer.yaml
 
 # Expose droptailer-server port to host
