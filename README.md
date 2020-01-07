@@ -39,11 +39,16 @@ echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' \
 ## Testing droptailer
 
 ```bash
+# install kind 0.6.0 or higher !
+KIND_VERSION=v0.6.1
+wget https://github.com/kubernetes-sigs/kind/releases/download/${KIND_VERSION}/kind-linux-amd64
+mv kind-linux-amd64 ~/bin/kind
+chmod +x ~/bin/kind
+
 # Create a k8s cluster
 kind create cluster
 
 # Deploy droptailer-server
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
 kubectl apply -f ./test/manifests/droptailer.yaml
 
 # Expose droptailer-server port to host
@@ -66,5 +71,5 @@ metalpod/droptailer-client
 stern -n firewall drop
 
 # Generate a sample message for the systemd journal that gets catched by the droptailer-client
-sudo logger -t kernel "nftables-dropped: IN=vrf09 OUT= MAC=12:99:fd:3b:ce:f8:1a:ae:e9:a7:95:50:08:00 SRC=1.2.3.4 DST=4.3.2.1 LEN=40 TOS=0x00 PREC=0x00 TTL=238 ID=46474 PROTO=TCP SPT=59265 DPT=445 WINDOW=1024 RES=0x00 SYN URGP=0"
+sudo logger -t kernel "nftables-metal-dropped: IN=vrf09 OUT= MAC=12:99:fd:3b:ce:f8:1a:ae:e9:a7:95:50:08:00 SRC=1.2.3.4 DST=4.3.2.1 LEN=40 TOS=0x00 PREC=0x00 TTL=238 ID=46474 PROTO=TCP SPT=59265 DPT=445 WINDOW=1024 RES=0x00 SYN URGP=0"
 ```

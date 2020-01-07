@@ -1,7 +1,6 @@
 package client
 
 import (
-	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
@@ -97,11 +96,6 @@ func (c Client) Start() error {
 	}
 	df.run()
 	return nil
-}
-
-func newCtx(timeout time.Duration) context.Context {
-	ctx, _ := context.WithTimeout(context.TODO(), timeout)
-	return ctx
 }
 
 func messageFormatter(entry *sdjournal.JournalEntry) (string, error) {

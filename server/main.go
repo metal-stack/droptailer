@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/tls"
-	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -39,17 +38,9 @@ func main() {
 	if serverKey == "" {
 		serverKey = defaultServerKey
 	}
-	cert, err := ioutil.ReadFile(serverCertificate)
-	if err != nil {
-		log.Fatalf("could not read server certificate: %v", err)
-	}
-	key, err := ioutil.ReadFile(serverKey)
-	if err != nil {
-		log.Fatalf("could not read server key: %v", err)
-	}
 
 	// Generate Certificate struct
-	c, err := tls.X509KeyPair(cert, key)
+	c, err := tls.LoadX509KeyPair(serverCertificate, serverKey)
 	if err != nil {
 		log.Fatalf("failed to parse certificate: %v", err)
 	}
