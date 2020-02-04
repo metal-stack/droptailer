@@ -17,10 +17,10 @@ client:
 
 .PHONY: dockerimage
 dockerimage:
-	docker build -t metalpod/droptailer:${DOCKER_TAG} .
-	docker build -f Dockerfile.client -t metalpod/droptailer-client:${DOCKER_TAG} .
+	docker build -t metalstack/droptailer:${DOCKER_TAG} .
+	docker build -f Dockerfile.client -t metalstack/droptailer-client:${DOCKER_TAG} .
 
 .PHONY: dockerpush
 dockerpush:
-	docker push metalpod/droptailer:${DOCKER_TAG}
-	docker push metalpod/droptailer-client:${DOCKER_TAG}
+	docker push metalstack/droptailer:${DOCKER_TAG}
+	docker push metalstack/droptailer-client:${DOCKER_TAG}
