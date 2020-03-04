@@ -101,7 +101,7 @@ spec:
       containers:
       - name: droptailer
         imagePullPolicy: Always
-        image: docker.io/metalpod/droptailer:latest
+        image: docker.io/metalstack/droptailer:latest
         ports:
         - protocol: TCP
           containerPort: 50051
