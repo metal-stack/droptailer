@@ -2,7 +2,7 @@ FROM golang:1.13-buster as builder
 COPY / /work
 WORKDIR /work
 RUN apt-get update \
- && apt-get install libsystemd-dev \
+ && apt-get install --yes libsystemd-dev \
  && make client
 
 FROM debian:buster
