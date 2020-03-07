@@ -40,7 +40,7 @@ echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' \
 
 ```bash
 # install kind 0.6.0 or higher !
-KIND_VERSION=v0.6.1
+KIND_VERSION=v0.7.0
 wget https://github.com/kubernetes-sigs/kind/releases/download/${KIND_VERSION}/kind-linux-amd64
 mv kind-linux-amd64 ~/bin/kind
 chmod +x ~/bin/kind
@@ -52,8 +52,9 @@ kind create cluster
 kubectl apply -f ./test/manifests/droptailer.yaml
 
 # Expose droptailer-server port to host
-podName=$(kubectl get pods -n droptailer -o=jsonpath='{.items[0].metadata.name}')
-kubectl port-forward -n droptailer --address 0.0.0.0 pod/$podName 50051:50051 &
+podName=$(kubectl get pods -n firewall -o=jsonpath='{.items[0].metadata.name}')
+echo $podName
+kubectl port-forward -n firewall --address 0.0.0.0 pod/$podName 50051:50051 &
 
 # Run droptailer-client
 docker run -it \
@@ -65,7 +66,7 @@ docker run -it \
   --volume /var/log/journal:/var/log/journal \
   --volume /run/log/journal:/run/log/journal \
   --volume /etc/machine-id:/etc/machine-id \
-metalpod/droptailer-client
+metalstack/droptailer-client
 
 # Watch for drops
 stern -n firewall drop
