@@ -53,8 +53,8 @@ func (d *dropforwarder) writeTo(r io.ReadCloser) {
 			Timestamp: &timestamp.Timestamp{Seconds: cr.ts},
 			Fields:    fields,
 		}
-		// FIXME we leak cancel func here, dunno howto handle that.
-		ctx, _ := context.WithTimeout(context.TODO(), 35*time.Second)
+		ctx, cancel := context.WithTimeout(context.TODO(), 3*time.Second)
+		defer cancel()
 		_, err = d.dsc.Push(
 			ctx,
 			de,
