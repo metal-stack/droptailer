@@ -23,7 +23,7 @@ func main() {
 	// address should be in the form of: dns://localhost:53/droptailer:50051
 	// then according to: https://github.com/grpc/grpc/blob/master/doc/naming.md
 	// name based resolution should happen, which can be a /etc/hosts entry
-	// which is created by the firewall-policy-controller
+	// which is created by the firewall-controller
 	// or we skip the dns resolver inbetween and just specify:
 	// droptailer:50051 and rely on the local resolver which will update the IP for the client.
 	// /etc/hosts can be updated with: https://github.com/txn2/txeh
