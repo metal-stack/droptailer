@@ -18,6 +18,6 @@ jobs:
         password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
     - name: Build the Docker images
       run: |
-        export GITHUB_TAG_NAME=${GITHUB_HEAD_REF##*/}
+        export GITHUB_TAG_NAME=${GITHUB_REF##*/}
         make dockerimage
         make dockerpush
