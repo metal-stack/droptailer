@@ -11,6 +11,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install libsystemd headers
+      run: sudo apt-get install libsystemd-dev
+
     - name: Lint
       uses: golangci/golangci-lint-action@v2
       with:
