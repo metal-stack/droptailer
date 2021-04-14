@@ -3,6 +3,7 @@ package client
 import (
 	"bufio"
 	"context"
+	"errors"
 	"io"
 	"log"
 	"strconv"
@@ -25,7 +26,7 @@ func (d *dropforwarder) run() {
 	pr, pw := io.Pipe()
 	until := make(chan time.Time)
 	go func() {
-		if err := d.jr.Follow(until, pw); err != sdjournal.ErrExpired {
+		if err := d.jr.Follow(until, pw); !errors.Is(err, sdjournal.ErrExpired) {
 			log.Fatalf("Error during follow: %s", err)
 		}
 		pw.Close()

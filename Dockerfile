@@ -1,9 +1,9 @@
-FROM golang:1.15-buster as builder
+FROM golang:1.16-buster as builder
 COPY / /work
 WORKDIR /work
 RUN make server
 
-FROM alpine:3.12
+FROM alpine:3.13
 COPY --from=builder /work/bin/server /server
 ENV SERVER_PORT=50051
 EXPOSE ${SERVER_PORT}
