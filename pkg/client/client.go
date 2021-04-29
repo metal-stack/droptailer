@@ -35,14 +35,14 @@ func (c Client) Start() error {
 	// Load the certificates from disk
 	certificate, err := tls.LoadX509KeyPair(c.Certificates.ClientCertificate, c.Certificates.ClientKey)
 	if err != nil {
-		return fmt.Errorf("could not load client key pair: %s", err)
+		return fmt.Errorf("could not load client key pair: %w", err)
 	}
 
 	// Create a certificate pool from the certificate authority
 	certPool := x509.NewCertPool()
 	ca, err := ioutil.ReadFile(c.Certificates.CaCertificate)
 	if err != nil {
-		return fmt.Errorf("could not read ca certificate: %s", err)
+		return fmt.Errorf("could not read ca certificate: %w", err)
 	}
 
 	// Append the client certificates from the CA
@@ -55,6 +55,7 @@ func (c Client) Start() error {
 		ServerName:   "droptailer",
 		Certificates: []tls.Certificate{certificate},
 		RootCAs:      certPool,
+		MinVersion:   tls.VersionTLS12,
 	})
 
 	// Set up a connection to the server.
@@ -66,7 +67,7 @@ func (c Client) Start() error {
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor(opts...)),
 	)
 	if err != nil {
-		return fmt.Errorf("could not connect to server: %v", err)
+		return fmt.Errorf("could not connect to server: %w", err)
 	}
 	defer conn.Close()
 	dsc := pb.NewDroptailerClient(conn)
@@ -83,10 +84,10 @@ func (c Client) Start() error {
 			Formatter: messageFormatter,
 		})
 	if err != nil {
-		return fmt.Errorf("Error opening journal: %s", err)
+		return fmt.Errorf("error opening journal: %w", err)
 	}
 	if jr == nil {
-		return fmt.Errorf("Got a nil reader")
+		return fmt.Errorf("got a nil reader")
 	}
 	defer jr.Close()
 	df := &dropforwarder{
