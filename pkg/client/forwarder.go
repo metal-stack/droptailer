@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/coreos/go-systemd/v22/sdjournal"
-	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	pb "github.com/metal-pod/droptailer/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type dropforwarder struct {
@@ -51,7 +51,7 @@ func (d *dropforwarder) writeTo(r io.ReadCloser) {
 		}
 		fields := parseFields(cr.messageWithoutPrefix)
 		de := &pb.Drop{
-			Timestamp: &timestamp.Timestamp{Seconds: cr.ts},
+			Timestamp: &timestamppb.Timestamp{Seconds: cr.ts},
 			Fields:    fields,
 		}
 		ctx, cancel := context.WithTimeout(context.TODO(), 3*time.Second)
