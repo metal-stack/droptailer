@@ -71,30 +71,17 @@ func (c Client) Start() error {
 	}
 	defer conn.Close()
 	dsc := pb.NewDroptailerClient(conn)
-	jr, err := sdjournal.NewJournalReader(
-		sdjournal.JournalReaderConfig{
-			NumFromTail: 100,
-			// Matches on message only match the whole message not the start
-			Matches: []sdjournal.Match{
-				{
-					Field: sdjournal.SD_JOURNAL_FIELD_SYSLOG_IDENTIFIER,
-					Value: "kernel",
-				},
-			},
-			Formatter: messageFormatter,
-		})
+
+	df, err := NewDropforwarder(dsc, c.PrefixesOfDrops)
 	if err != nil {
-		return fmt.Errorf("error opening journal: %w", err)
+		return err
 	}
-	if jr == nil {
-		return fmt.Errorf("got a nil reader")
-	}
-	defer jr.Close()
-	df := &dropforwarder{
-		jr:       jr,
-		dsc:      dsc,
-		prefixes: c.PrefixesOfDrops,
-	}
+	defer func() {
+		err = df.Close()
+		if err != nil {
+			fmt.Printf("error closing journal reader:%s", err)
+		}
+	}()
 	df.run()
 	return nil
 }
