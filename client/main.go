@@ -15,6 +15,7 @@ const (
 	defaultCaCertificate     = "/etc/droptailer-client/ca.crt"
 	defaultClientCertificate = "/etc/droptailer-client/tls.crt"
 	defaultClientKey         = "/etc/droptailer-client/tls.key"
+	defaultEveSocket         = "/var/log/suricata/eve.socket"
 )
 
 var defaultPrefixesOfDrops = []string{"nftables-metal-dropped: ", "nftables-firewall-dropped: "}
@@ -55,6 +56,10 @@ func main() {
 	if clientKey == "" {
 		clientKey = defaultClientKey
 	}
+	eveSocket := os.Getenv("DROPTAILER_EVE_SOCKET")
+	if eveSocket == "" {
+		eveSocket = defaultEveSocket
+	}
 	c := client.Client{
 		ServerAddress:   address,
 		PrefixesOfDrops: prefixesOfDrops,
@@ -63,6 +68,7 @@ func main() {
 			ClientCertificate: clientCertificate,
 			ClientKey:         clientKey,
 		},
+		EveSocket: eveSocket,
 	}
 	err = c.Start()
 	if err != nil {

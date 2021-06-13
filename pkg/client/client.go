@@ -21,6 +21,7 @@ type Client struct {
 	ServerAddress   string
 	PrefixesOfDrops []string
 	Certificates    Certificates
+	EveSocket       string
 }
 
 type Certificates struct {
@@ -83,7 +84,7 @@ func (c Client) Start() error {
 		}
 	}()
 
-	sf, err := NewSuricataforwarder(dsc, "/var/log/suricata/eve.socket")
+	sf, err := NewSuricataforwarder(dsc, c.EveSocket)
 	if err != nil {
 		return err
 	}
