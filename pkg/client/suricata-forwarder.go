@@ -34,13 +34,11 @@ func (d *suricataforwarder) Close() error {
 	return d.s.Close()
 }
 func (d *suricataforwarder) run() {
-
 	d.writeTo(d.s)
 }
 
 // writeTo
 // actual message will be like
-// nftables-metal-dropped: IN=vrf104009 OUT= MAC=12:99:fd:3b:ce:f8:1a:ae:e9:a7:95:50:08:00 SRC=222.73.197.30 DST=212.34.89.87 LEN=40 TOS=0x00 PREC=0x00 TTL=238 ID=46474 PROTO=TCP SPT=59265 DPT=445 WINDOW=1024 RES=0x00 SYN URGP=0
 func (d *suricataforwarder) writeTo(r io.ReadCloser) {
 	br := bufio.NewReader(r)
 	for {
