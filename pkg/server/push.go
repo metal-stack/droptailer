@@ -17,13 +17,13 @@ const (
 type Server struct{}
 
 // Push implements droptailer.Push
-func (s *Server) Push(ctx context.Context, de *pb.Drop) (*pb.Void, error) {
-	de.Fields[timestamp] = time.Unix(de.Timestamp.Seconds, 0).String()
+func (s *Server) Push(ctx context.Context, e *pb.Event) (*pb.Void, error) {
+	e.Fields[timestamp] = time.Unix(e.Timestamp.Seconds, 0).String()
 
-	js, err := json.Marshal(de.Fields)
+	js, err := json.Marshal(e.Fields)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("%s %s\n", de.Fields[timestamp], js)
+	fmt.Printf("%s %s %s\n", e.Type, e.Fields[timestamp], js)
 	return &pb.Void{}, nil
 }

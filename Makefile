@@ -3,6 +3,7 @@ DOCKER_TAG := $(or ${GITHUB_TAG_NAME}, latest)
 
 .PHONY: proto
 proto:
+	docker pull metalstack/builder
 	docker run -it --rm -v ${PWD}/proto:/work/proto metalstack/builder protoc -I proto/ proto/droptailer.proto --go_out=plugins=grpc:proto
 
 .PHONY: server

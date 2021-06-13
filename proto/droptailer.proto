@@ -2,17 +2,24 @@ syntax = "proto3";
 
 package proto;
 
-option go_package = ".;proto";
+option go_package = "/.;proto";
 
 import "google/protobuf/timestamp.proto";
 
 service Droptailer {
-    rpc Push (Drop) returns (Void) {};
+    rpc Push (Event) returns (Void) {};
 }
 
-message Drop {
+message Event {
     google.protobuf.Timestamp timestamp = 1;
     map<string, string> fields = 2;
+    EventType type = 3;
+}
+
+enum EventType {
+    DROP = 0;
+    IDS = 1;
+    IPS = 2;
 }
 
 message Void {}

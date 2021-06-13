@@ -50,9 +50,10 @@ func (d *dropforwarder) writeTo(r io.ReadCloser) {
 			continue
 		}
 		fields := parseFields(cr.messageWithoutPrefix)
-		de := &pb.Drop{
+		de := &pb.Event{
 			Timestamp: &timestamppb.Timestamp{Seconds: cr.ts},
 			Fields:    fields,
+			Type:      pb.EventType_DROP,
 		}
 		ctx, cancel := context.WithTimeout(context.TODO(), 3*time.Second)
 		defer cancel()
