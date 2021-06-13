@@ -82,6 +82,18 @@ func (c Client) Start() error {
 			fmt.Printf("error closing journal reader:%s", err)
 		}
 	}()
+
+	sf, err := NewSuricataforwarder(dsc, "/var/log/suricata/eve.socket")
+	if err != nil {
+		return err
+	}
+	defer func() {
+		err = sf.Close()
+		if err != nil {
+			fmt.Printf("error closing suricata reader:%s", err)
+		}
+	}()
+	go sf.run()
 	df.run()
 	return nil
 }
