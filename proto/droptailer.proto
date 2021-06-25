@@ -14,6 +14,7 @@ message Event {
     google.protobuf.Timestamp timestamp = 1;
     map<string, string> fields = 2;
     EventType type = 3;
+    string content = 4;
 }
 
 enum EventType {

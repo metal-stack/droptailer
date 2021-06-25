@@ -8,9 +8,10 @@ import (
 
 	pb "github.com/metal-pod/droptailer/proto"
 
-	server "github.com/metal-pod/droptailer/pkg/server"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+
+	server "github.com/metal-pod/droptailer/pkg/server"
 )
 
 const (

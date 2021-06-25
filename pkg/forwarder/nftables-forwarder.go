@@ -1,4 +1,4 @@
-package client
+package forwarder
 
 import (
 	"bufio"
@@ -54,7 +54,7 @@ func NewDropforwarder(dsc pb.DroptailerClient, prefixes []string) (*dropforwarde
 func (d *dropforwarder) Close() error {
 	return d.jr.Close()
 }
-func (d *dropforwarder) run() {
+func (d *dropforwarder) Run() {
 	pr, pw := io.Pipe()
 	until := make(chan time.Time)
 	go func() {

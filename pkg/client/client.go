@@ -8,8 +8,10 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/coreos/go-systemd/v22/sdjournal"
-	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+	"github.com/metal-pod/droptailer/pkg/forwarder"
+
+	grpcretry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+
 	pb "github.com/metal-pod/droptailer/proto"
 
 	"google.golang.org/grpc"
@@ -32,7 +34,6 @@ type Certificates struct {
 
 // Start to push drops to the droptailer server.
 func (c Client) Start() error {
-
 	// Load the certificates from disk
 	certificate, err := tls.LoadX509KeyPair(c.Certificates.ClientCertificate, c.Certificates.ClientKey)
 	if err != nil {
@@ -60,12 +61,12 @@ func (c Client) Start() error {
 	})
 
 	// Set up a connection to the server.
-	opts := []grpc_retry.CallOption{
-		grpc_retry.WithBackoff(grpc_retry.BackoffLinear(100 * time.Millisecond)),
+	opts := []grpcretry.CallOption{
+		grpcretry.WithBackoff(grpcretry.BackoffLinear(100 * time.Millisecond)),
 	}
 	conn, err := grpc.Dial(c.ServerAddress, grpc.WithTransportCredentials(creds),
-		// grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor(opts...)),
-		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor(opts...)),
+		// grpc.WithStreamInterceptor(grpcretry.StreamClientInterceptor(opts...)),
+		grpc.WithUnaryInterceptor(grpcretry.UnaryClientInterceptor(opts...)),
 	)
 	if err != nil {
 		return fmt.Errorf("could not connect to server: %w", err)
@@ -73,7 +74,7 @@ func (c Client) Start() error {
 	defer conn.Close()
 	dsc := pb.NewDroptailerClient(conn)
 
-	df, err := NewDropforwarder(dsc, c.PrefixesOfDrops)
+	df, err := forwarder.NewDropforwarder(dsc, c.PrefixesOfDrops)
 	if err != nil {
 		return err
 	}
@@ -83,8 +84,9 @@ func (c Client) Start() error {
 			fmt.Printf("error closing journal reader:%s", err)
 		}
 	}()
+	go df.Run()
 
-	sf, err := NewSuricataforwarder(dsc, c.EveSocket)
+	sf, err := forwarder.NewSuricataforwarder(dsc, c.EveSocket)
 	if err != nil {
 		return err
 	}
@@ -94,17 +96,7 @@ func (c Client) Start() error {
 			fmt.Printf("error closing suricata reader:%s", err)
 		}
 	}()
-	go sf.run()
-	df.run()
-	return nil
-}
+	sf.Run()
 
-func messageFormatter(entry *sdjournal.JournalEntry) (string, error) {
-	msg, ok := entry.Fields[sdjournal.SD_JOURNAL_FIELD_MESSAGE]
-	if !ok {
-		return "", fmt.Errorf("no %s field present in journal entry", sdjournal.SD_JOURNAL_FIELD_MESSAGE)
-	}
-	usec := entry.RealtimeTimestamp
-	timestamp := time.Unix(0, int64(usec)*int64(time.Microsecond))
-	return fmt.Sprintf("%d@%s\n", timestamp.Unix(), msg), nil
+	return nil
 }
