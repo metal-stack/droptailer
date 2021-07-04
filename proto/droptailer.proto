@@ -20,7 +20,6 @@ message Event {
 enum EventType {
     DROP = 0;
     IDS = 1;
-    IPS = 2;
 }
 
 message Void {}
