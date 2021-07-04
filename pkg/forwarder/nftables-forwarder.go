@@ -1,9 +1,10 @@
-package client
+package forwarder
 
 import (
 	"bufio"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"strconv"
@@ -22,7 +23,38 @@ type dropforwarder struct {
 	prefixes []string
 }
 
-func (d *dropforwarder) run() {
+func NewDropforwarder(dsc pb.DroptailerClient, prefixes []string) (*dropforwarder, error) {
+	jr, err := sdjournal.NewJournalReader(
+		sdjournal.JournalReaderConfig{
+			NumFromTail: 100,
+			// Matches on message only match the whole message not the start
+			Matches: []sdjournal.Match{
+				{
+					Field: sdjournal.SD_JOURNAL_FIELD_SYSLOG_IDENTIFIER,
+					Value: "kernel",
+				},
+			},
+			Formatter: messageFormatter,
+		})
+	if err != nil {
+		return nil, fmt.Errorf("error opening journal: %w", err)
+	}
+	if jr == nil {
+		return nil, fmt.Errorf("got a nil reader")
+	}
+	defer jr.Close()
+	df := &dropforwarder{
+		jr:       jr,
+		dsc:      dsc,
+		prefixes: prefixes,
+	}
+	return df, nil
+}
+
+func (d *dropforwarder) Close() error {
+	return d.jr.Close()
+}
+func (d *dropforwarder) Run() {
 	pr, pw := io.Pipe()
 	until := make(chan time.Time)
 	go func() {
@@ -50,9 +82,10 @@ func (d *dropforwarder) writeTo(r io.ReadCloser) {
 			continue
 		}
 		fields := parseFields(cr.messageWithoutPrefix)
-		de := &pb.Drop{
+		de := &pb.Event{
 			Timestamp: &timestamppb.Timestamp{Seconds: cr.ts},
 			Fields:    fields,
+			Type:      pb.EventType_DROP,
 		}
 		ctx, cancel := context.WithTimeout(context.TODO(), 3*time.Second)
 		defer cancel()
