@@ -5,7 +5,7 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/coreos/go-systemd/v22/sdjournal"
@@ -40,7 +40,7 @@ func (c Client) Start() error {
 
 	// Create a certificate pool from the certificate authority
 	certPool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile(c.Certificates.CaCertificate)
+	ca, err := os.ReadFile(c.Certificates.CaCertificate)
 	if err != nil {
 		return fmt.Errorf("could not read ca certificate: %w", err)
 	}
