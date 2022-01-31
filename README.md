@@ -1,16 +1,17 @@
 # Droptailer
 
-Droptailer gathers packet drops from different machines, enriches them with data from kubernetes api resources and makes them accessible by kubernetes means.
+Droptailer gathers firewall drop or accept logs from different machines, enriches them with data from kubernetes api resources and makes them accessible by kubernetes means.
 
 ## Client
 
-- reads the systemd journal for kernel log messages about packet drops
+- reads the systemd journal for kernel log messages about packet drops or accepts
 - pushes them with gRPC to the `droptail` server
 
 environment variables:
 
 - `DROPTAILER_SERVER_ADDRESS`: endpoint for the server
 - `DROPTAILER_PREFIXES_OF_DROPS`: prefixes that identify drop messages in the journal
+- `DROPTAILER_PREFIXES_OF_ACCEPTS`: prefixes that identify drop messages in the journal
 
 ## Generating certificates
 
@@ -71,6 +72,7 @@ metalstack/droptailer-client
 # Watch for drops
 stern -n firewall drop
 
-# Generate a sample message for the systemd journal that gets catched by the droptailer-client
+# Generate sample messages for the systemd journal that is caught by the droptailer-client
 sudo logger -t kernel "nftables-metal-dropped: IN=vrf09 OUT= MAC=12:99:fd:3b:ce:f8:1a:ae:e9:a7:95:50:08:00 SRC=1.2.3.4 DST=4.3.2.1 LEN=40 TOS=0x00 PREC=0x00 TTL=238 ID=46474 PROTO=TCP SPT=59265 DPT=445 WINDOW=1024 RES=0x00 SYN URGP=0"
+sudo logger -t kernel "nftables-metal-accepted: IN=vrf10 OUT=vrf11 MAC=12:99:fd:3b:ce:f8:1a:ae:e9:a7:95:50:08:00 SRC=5.6.7.8 DST=8.7.6.5 LEN=40 TOS=0x00 PREC=0x00 TTL=238 ID=46474 PROTO=TCP SPT=59265 DPT=445 WINDOW=1024 RES=0x00 SYN URGP=0 ItIs=OnlyText"
 ```
