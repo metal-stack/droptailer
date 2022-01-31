@@ -18,7 +18,7 @@ const (
 )
 
 var defaultPrefixesOfDrops = []string{"nftables-metal-dropped: ", "nftables-firewall-dropped: "}
-var defaultPrefixesOfAccepts = []string{"nftables-metal-accept: ", "nftables-firewall-accept: "}
+var defaultPrefixesOfAccepts = []string{"nftables-metal-accepted: ", "nftables-firewall-accepted: "}
 
 func main() {
 	// address should be in the form of: dns://localhost:53/droptailer:50051
