@@ -17,9 +17,10 @@ import (
 )
 
 type dropforwarder struct {
-	jr       *sdjournal.JournalReader
-	dsc      pb.DroptailerClient
-	prefixes []string
+	jr             *sdjournal.JournalReader
+	dsc            pb.DroptailerClient
+	dropPrefixes   []string
+	acceptPrefixes []string
 }
 
 func (d *dropforwarder) run() {
@@ -45,7 +46,7 @@ func (d *dropforwarder) writeTo(r io.ReadCloser) {
 			r.Close()
 			break
 		}
-		cr := checkLine(string(line), d.prefixes)
+		cr := checkLine(string(line), d.dropPrefixes, d.acceptPrefixes)
 		if cr.skip {
 			continue
 		}
@@ -73,7 +74,7 @@ type checkResult struct {
 	ts                   int64
 }
 
-func checkLine(l string, prefixes []string) checkResult {
+func checkLine(l string, dropPrefixes, acceptPrefixes []string) checkResult {
 	parts := strings.Split(string(l), "@")
 	if len(parts) < 2 {
 		return checkResult{skip: true}
@@ -84,10 +85,16 @@ func checkLine(l string, prefixes []string) checkResult {
 		return checkResult{skip: true}
 	}
 	msg := parts[1]
-	for _, prefix := range prefixes {
+	for _, prefix := range dropPrefixes {
 		if strings.HasPrefix(msg, prefix) {
 			m := strings.TrimPrefix(msg, prefix)
-			return checkResult{skip: false, messageWithoutPrefix: m, ts: ts}
+			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=Drop", ts: ts}
+		}
+	}
+	for _, prefix := range acceptPrefixes {
+		if strings.HasPrefix(msg, prefix) {
+			m := strings.TrimPrefix(msg, prefix)
+			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=Accept", ts: ts}
 		}
 	}
 	return checkResult{skip: true}

@@ -18,6 +18,7 @@ const (
 )
 
 var defaultPrefixesOfDrops = []string{"nftables-metal-dropped: ", "nftables-firewall-dropped: "}
+var defaultPrefixesOfAccepts = []string{"nftables-metal-accept: ", "nftables-firewall-accept: "}
 
 func main() {
 	// address should be in the form of: dns://localhost:53/droptailer:50051
@@ -43,6 +44,12 @@ func main() {
 		prefixesOfDrops = strings.Split(prefixesOfDropsEnv, ",")
 	}
 
+	prefixesOfAccepts := defaultPrefixesOfAccepts
+	prefixesOfAcceptsEnv := os.Getenv("DROPTAILER_PREFIXES_OF_ACCEPTS")
+	if prefixesOfAcceptsEnv != "" {
+		prefixesOfAccepts = strings.Split(prefixesOfAcceptsEnv, ",")
+	}
+
 	caCertificate := os.Getenv("DROPTAILER_CA_CERTIFICATE")
 	if caCertificate == "" {
 		caCertificate = defaultCaCertificate
@@ -56,8 +63,9 @@ func main() {
 		clientKey = defaultClientKey
 	}
 	c := client.Client{
-		ServerAddress:   address,
-		PrefixesOfDrops: prefixesOfDrops,
+		ServerAddress:     address,
+		PrefixesOfDrops:   prefixesOfDrops,
+		PrefixesOfAccepts: prefixesOfAccepts,
 		Certificates: client.Certificates{
 			CaCertificate:     caCertificate,
 			ClientCertificate: clientCertificate,
