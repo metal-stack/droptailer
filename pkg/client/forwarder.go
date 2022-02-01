@@ -88,13 +88,13 @@ func checkLine(l string, dropPrefixes, acceptPrefixes []string) checkResult {
 	for _, prefix := range dropPrefixes {
 		if strings.HasPrefix(msg, prefix) {
 			m := strings.TrimPrefix(msg, prefix)
-			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=Drop", ts: ts}
+			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=drop", ts: ts}
 		}
 	}
 	for _, prefix := range acceptPrefixes {
 		if strings.HasPrefix(msg, prefix) {
 			m := strings.TrimPrefix(msg, prefix)
-			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=Accept", ts: ts}
+			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=accept", ts: ts}
 		}
 	}
 	return checkResult{skip: true}
