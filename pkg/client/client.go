@@ -18,9 +18,10 @@ import (
 
 // Client sends drops of the journal to the droptailer server.
 type Client struct {
-	ServerAddress   string
-	PrefixesOfDrops []string
-	Certificates    Certificates
+	ServerAddress     string
+	PrefixesOfDrops   []string
+	PrefixesOfAccepts []string
+	Certificates      Certificates
 }
 
 type Certificates struct {
@@ -91,9 +92,10 @@ func (c Client) Start() error {
 	}
 	defer jr.Close()
 	df := &dropforwarder{
-		jr:       jr,
-		dsc:      dsc,
-		prefixes: c.PrefixesOfDrops,
+		jr:             jr,
+		dsc:            dsc,
+		dropPrefixes:   c.PrefixesOfDrops,
+		acceptPrefixes: c.PrefixesOfAccepts,
 	}
 	df.run()
 	return nil
