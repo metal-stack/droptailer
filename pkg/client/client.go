@@ -10,7 +10,7 @@ import (
 
 	"github.com/coreos/go-systemd/v22/sdjournal"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
-	pb "github.com/metal-pod/droptailer/proto"
+	pb "github.com/metal-pod/droptailer/api/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
