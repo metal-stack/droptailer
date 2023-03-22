@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/metal-pod/droptailer/proto"
+	pb "github.com/metal-pod/droptailer/api/proto"
 )
 
 const (
