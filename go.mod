@@ -6,7 +6,7 @@ require (
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	google.golang.org/grpc v1.53.0
-	google.golang.org/protobuf v1.29.0
+	google.golang.org/protobuf v1.29.1
 )
 
 require (
