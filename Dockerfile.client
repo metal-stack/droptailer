@@ -1,10 +1,10 @@
-FROM golang:1.20-buster as builder
+FROM golang:1.21-bookworm as builder
 COPY / /work
 WORKDIR /work
 RUN apt-get update \
  && apt-get install --yes libsystemd-dev \
  && make client
 
-FROM debian:11-slim
+FROM debian:12-slim
 COPY --from=builder /work/bin/client /client
 CMD ["/client"]
