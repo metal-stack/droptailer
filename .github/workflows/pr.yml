@@ -26,6 +26,13 @@ jobs:
     - name: Install libsystemd headers
       run: sudo apt-get update && sudo apt-get install libsystemd-dev
 
+    - name: Set up Go 1.22
+      uses: actions/setup-go@v5
+      with:
+        go-version: "1.22"
+        cache: false
+      id: go
+
     - name: Lint
       uses: golangci/golangci-lint-action@v4
       with:
