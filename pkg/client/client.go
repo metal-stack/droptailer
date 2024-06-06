@@ -63,7 +63,7 @@ func (c Client) Start() error {
 	opts := []grpc_retry.CallOption{
 		grpc_retry.WithBackoff(grpc_retry.BackoffLinear(100 * time.Millisecond)),
 	}
-	conn, err := grpc.Dial(c.ServerAddress, grpc.WithTransportCredentials(creds),
+	conn, err := grpc.NewClient(c.ServerAddress, grpc.WithTransportCredentials(creds),
 		// grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor(opts...)),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor(opts...)),
 	)
