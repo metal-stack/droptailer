@@ -22,7 +22,7 @@ jobs:
       id: go
 
     - name: Lint
-      uses: golangci/golangci-lint-action@v4
+      uses: golangci/golangci-lint-action@v6
       with:
         args: -p bugs -p unused -D protogetter --timeout=3m
 

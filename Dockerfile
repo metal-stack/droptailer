@@ -3,7 +3,7 @@ COPY / /work
 WORKDIR /work
 RUN make server
 
-FROM alpine:3.19
+FROM alpine:3.20
 COPY --from=builder /work/bin/server /server
 ENV SERVER_PORT=50051
 EXPOSE ${SERVER_PORT}
