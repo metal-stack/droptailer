@@ -51,14 +51,14 @@ jobs:
         [ "${GITHUB_EVENT_NAME}" == 'release' ] && echo "tag=${GITHUB_REF##*/}" >> $GITHUB_ENV || true
         [ "${GITHUB_EVENT_NAME}" == 'push' ] && echo "tag=latest" >> $GITHUB_ENV || true
 
-    - name: Push image
+    - name: Push server image
       uses: docker/build-push-action@v5
       with:
         context: .
         push: true
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.tag }}
 
-    - name: Push image
+    - name: Push client image
       uses: docker/build-push-action@v5
       with:
         context: .
