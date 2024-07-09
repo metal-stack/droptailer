@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
-	google.golang.org/grpc v1.64.0
+	google.golang.org/grpc v1.64.1
 	google.golang.org/protobuf v1.34.1
 )
 
