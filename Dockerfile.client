@@ -1,10 +1,10 @@
-FROM golang:1.22-bookworm as builder
+FROM golang:1.22-bookworm AS builder
 COPY / /work
 WORKDIR /work
 RUN apt-get update \
  && apt-get install --yes libsystemd-dev \
  && make client
 
-FROM debian:12-slim
+FROM gcr.io/distroless/base-debian12
 COPY --from=builder /work/bin/client /client
 CMD ["/client"]
