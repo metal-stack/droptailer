@@ -107,6 +107,6 @@ func messageFormatter(entry *sdjournal.JournalEntry) (string, error) {
 		return "", fmt.Errorf("no %s field present in journal entry", sdjournal.SD_JOURNAL_FIELD_MESSAGE)
 	}
 	usec := entry.RealtimeTimestamp
-	timestamp := time.Unix(0, int64(usec)*int64(time.Microsecond))
+	timestamp := time.Unix(0, int64(usec)*int64(time.Microsecond)) // nolint:gosec
 	return fmt.Sprintf("%d@%s\n", timestamp.Unix(), msg), nil
 }
