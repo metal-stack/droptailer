@@ -1,10 +1,13 @@
 version: v2
 lint:
   use:
-    - BASIC
+    - STANDARD
   except:
-    - FIELD_NOT_REQUIRED
-    - PACKAGE_NO_IMPORT_CYCLE
+    - SERVICE_SUFFIX
+    - PACKAGE_VERSION_SUFFIX
+    - RPC_RESPONSE_STANDARD_NAME
+    - RPC_REQUEST_RESPONSE_UNIQUE
+    - RPC_REQUEST_STANDARD_NAME
   disallow_comment_ignores: true
 breaking:
   use:
