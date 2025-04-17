@@ -70,7 +70,10 @@ func (c Client) Start() error {
 	if err != nil {
 		return fmt.Errorf("could not connect to server: %w", err)
 	}
-	defer conn.Close()
+	defer func() {
+		_ = conn.Close()
+	}()
+
 	dsc := pb.NewDroptailerClient(conn)
 	jr, err := sdjournal.NewJournalReader(
 		sdjournal.JournalReaderConfig{
@@ -90,7 +93,10 @@ func (c Client) Start() error {
 	if jr == nil {
 		return fmt.Errorf("got a nil reader")
 	}
-	defer jr.Close()
+	defer func() {
+		_ = jr.Close()
+	}()
+
 	df := &dropforwarder{
 		jr:             jr,
 		dsc:            dsc,

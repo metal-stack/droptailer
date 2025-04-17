@@ -30,7 +30,7 @@ func (d *dropforwarder) run() {
 		if err := d.jr.Follow(until, pw); !errors.Is(err, sdjournal.ErrExpired) {
 			log.Fatalf("Error during follow: %s", err)
 		}
-		pw.Close()
+		_ = pw.Close()
 	}()
 	d.writeTo(pr)
 }
@@ -43,7 +43,7 @@ func (d *dropforwarder) writeTo(r io.ReadCloser) {
 	for {
 		line, _, err := br.ReadLine()
 		if err != nil {
-			r.Close()
+			_ = r.Close()
 			break
 		}
 		cr := checkLine(string(line), d.dropPrefixes, d.acceptPrefixes)
