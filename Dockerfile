@@ -1,9 +1,9 @@
-FROM golang:1.24-bookworm AS builder
+FROM golang:1.25-trixie AS builder
 COPY / /work
 WORKDIR /work
 RUN make server
 
-FROM gcr.io/distroless/static-debian12:nonroot
+FROM gcr.io/distroless/static-debian13:nonroot
 COPY --from=builder /work/bin/server /server
 ENV SERVER_PORT=50051
 EXPOSE ${SERVER_PORT}
