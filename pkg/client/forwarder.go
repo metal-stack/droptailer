@@ -86,14 +86,12 @@ func checkLine(l string, dropPrefixes, acceptPrefixes []string) checkResult {
 	}
 	msg := parts[1]
 	for _, prefix := range dropPrefixes {
-		if strings.HasPrefix(msg, prefix) {
-			m := strings.TrimPrefix(msg, prefix)
+		if m, ok := strings.CutPrefix(msg, prefix); ok {
 			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=drop", ts: ts}
 		}
 	}
 	for _, prefix := range acceptPrefixes {
-		if strings.HasPrefix(msg, prefix) {
-			m := strings.TrimPrefix(msg, prefix)
+		if m, ok := strings.CutPrefix(msg, prefix); ok {
 			return checkResult{skip: false, messageWithoutPrefix: m + " ACTION=accept", ts: ts}
 		}
 	}
@@ -102,8 +100,8 @@ func checkLine(l string, dropPrefixes, acceptPrefixes []string) checkResult {
 
 func parseFields(msg string) map[string]string {
 	fields := make(map[string]string)
-	parts := strings.Fields(msg)
-	for _, part := range parts {
+	parts := strings.FieldsSeq(msg)
+	for part := range parts {
 		fieldParts := strings.Split(part, "=")
 		if len(fieldParts) == 0 {
 			continue
