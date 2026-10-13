@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/metal-pod/droptailer/pkg/client"
+	"github.com/metal-stack/droptailer/pkg/client"
 )
 
 const (
