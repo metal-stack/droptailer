@@ -1,0 +1,33 @@
+---
+name: metal-stack component release
+
+on:
+  pull_request:
+    branches:
+      - master
+  release:
+    types:
+      - published
+  push:
+    branches:
+      - master
+
+jobs:
+  draft:
+    uses: metal-stack/actions-common/.github/workflows/release-drafter.yaml@v1
+
+  go-build-server:
+    uses: metal-stack/actions-common/.github/workflows/go-build.yaml@v1
+    secrets: inherit
+    with:
+      build-command: make server
+
+  go-build-client:
+    uses: metal-stack/actions-common/.github/workflows/go-build.yaml@v1
+    secrets: inherit
+    with:
+      test: false
+      lint: false
+      build-command: make client
+      dockerfile: Dockerfile.client
+      image-name: ${{ github.repository }}-client
